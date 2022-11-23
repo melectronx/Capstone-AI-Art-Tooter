@@ -1,7 +1,7 @@
 resource "aws_lambda_function" "get-toot" {
   function_name = "get-toot"
   filename       = "build/get-toot.zip"
-  role          = "arn:aws:iam::534283426081:role/LabRole"
+  role          = local.iam_role
   handler       = "get-toot.handler"
   timeout       = 300
   runtime       = "python3.9"
@@ -18,7 +18,7 @@ resource "aws_lambda_function" "get-toot" {
 resource "aws_lambda_function" "post-toot" {
   function_name = "post-toot"
   filename       = "build/post-toot.zip"
-  role          = "arn:aws:iam::534283426081:role/LabRole"
+  role          = local.iam_role
   handler       = "post-toot.handler"
   timeout       = 300
   runtime       = "python3.9"

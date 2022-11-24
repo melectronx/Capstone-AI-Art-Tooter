@@ -5,7 +5,7 @@ resource "aws_lambda_function" "get-toot" {
   handler       = "get-toot.handler"
   timeout       = 300
   runtime       = "python3.9"
-  layers        = [aws_lambda_layer_version.requests_layer.arn]
+  layers        = [aws_lambda_layer_version.mastodon_layer.arn]
   source_code_hash = filebase64sha256("build/get-toot.zip")
 
   environment {
@@ -22,7 +22,7 @@ resource "aws_lambda_function" "post-toot" {
   handler       = "post-toot.handler"
   timeout       = 300
   runtime       = "python3.9"
-  layers        = [aws_lambda_layer_version.requests_layer.arn]
+  layers        = [aws_lambda_layer_version.mastodon_layer.arn]
   source_code_hash = filebase64sha256("build/post-toot.zip")  
   
   environment {
@@ -33,10 +33,22 @@ resource "aws_lambda_function" "post-toot" {
 }
 
 
-resource "aws_lambda_layer_version" "requests_layer" {
+resource "aws_lambda_layer_version" "mastodon_layer" {
   s3_bucket     = "ai-art-tooter-src-bucket"
-  s3_key        = "requests-layer.zip"
-  layer_name    = "requests-layer"
+  s3_key        = "mastodon-layer.zip"
+  layer_name    = "mastodon-layer"
 
   compatible_runtimes = ["python3.9"]
+}
+
+data "archive_file" "get-toot" {
+  type        = "zip"
+  source_file = "../get-toot/src"
+  output_path = "${path.module}/build/get-toot.zip"
+}
+
+data "archive_file" "post-toot" {
+  type        = "zip"
+  source_file = "../post-toot/src"
+  output_path = "${path.module}/build/post-toot.zip"
 }

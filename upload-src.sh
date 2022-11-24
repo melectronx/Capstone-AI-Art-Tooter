@@ -7,8 +7,8 @@ mkdir infrastructure/build
 
 cd mastodon-layer
 pip3 install -r requirements.txt --target python/lib/python3.9/site-packages
-zip -r ../build/mastodon-layer.zip .
+zip -r ../infrastructure/build/mastodon-layer.zip .
 cd ..
 
 echo  "upload to s3"
-aws s3 cp build/mastodon-layer.zip s3://ai-art-tooter-src-bucket/
+aws s3 cp infrastructure/build/mastodon-layer.zip s3://ai-art-tooter-src-bucket/

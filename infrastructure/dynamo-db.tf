@@ -6,7 +6,7 @@ resource "aws_dynamodb_table" "toots" {
   write_capacity = 5
   attribute {
     name = "id"
-    type = "S"
+    type = "N"
   }
   attribute {
     name = "date"

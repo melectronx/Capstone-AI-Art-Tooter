@@ -3,7 +3,7 @@ resource "aws_lambda_function" "get-toot" {
   filename       = "build/get-toot.zip"
   role          = local.iam_role
   handler       = "get-toot.handler"
-  timeout       = 300
+  timeout       = 600
   runtime       = "python3.9"
   layers        = [aws_lambda_layer_version.mastodon_layer.arn]
   source_code_hash = filebase64sha256("build/get-toot.zip")

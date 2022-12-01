@@ -8,8 +8,8 @@ resource "aws_dynamodb_table" "toots" {
     name = "id"
     type = "N"
   }
-  #attribute {
-  #  name = "date"
-  #  type = "S"
-  #}
+  attribute {
+    name = "date"
+    type = "S"
+  }
 }

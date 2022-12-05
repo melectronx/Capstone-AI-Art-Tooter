@@ -43,12 +43,12 @@ resource "aws_lambda_layer_version" "mastodon_layer" {
 
 data "archive_file" "get-toot" {
   type        = "zip"
-  source_file = "../${path.module}/source/get-toot/src/get-toot.py"
+  source_dir = "../${path.module}/source/get-toot/src/"
   output_path = "${path.module}/build/get-toot.zip"
 }
 
 data "archive_file" "post-toot" {
   type        = "zip"
-  source_file = "../${path.module}/source/post-toot/src/post-toot.py"
+  source_dir = "../${path.module}/source/post-toot/src/"
   output_path = "${path.module}/build/post-toot.zip"
 }

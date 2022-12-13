@@ -21,16 +21,20 @@ data "archive_file" "post_toot" {
   output_path = "${path.module}/build/post-toot.zip"
 }
 
+data "aws_s3_bucket" "art_bucket" {
+  bucket = "ai-art-tooter-img"
+}
+
 resource "aws_lambda_permission" "allow_bucket" {
   statement_id  = "AllowExecutionFromS3Bucket"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.post_toot.arn
   principal     = "s3.amazonaws.com"
-  source_arn    = aws_s3_bucket.ai-art-tooter-img.arn
+  source_arn    = data.aws_s3_bucket.art_bucket.arn
 }
 
 resource "aws_s3_bucket_notification" "bucket_notification" {
-  art_bucket = aws_s3_bucket.ai-art-tooter-img.id
+  bucket = data.aws_s3_bucket.art_bucket.id
 
   lambda_function {
     lambda_function_arn = aws_lambda_function.post_toot.arn

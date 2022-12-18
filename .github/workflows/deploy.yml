@@ -15,7 +15,7 @@ jobs:
       AWS_REGION: us-west-2
     steps:
       - uses: actions/checkout@v3
-      - name: Setup s3 bucketsand upload layers
+      - name: Setup s3 buckets and upload layers
         run:  |
           sh upload-src.sh
       - name: run terraform
@@ -23,3 +23,4 @@ jobs:
           cd infrastructure
           terraform init
           terraform apply --auto-approve
+          

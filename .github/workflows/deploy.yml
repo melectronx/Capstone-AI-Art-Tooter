@@ -1,0 +1,32 @@
+name: Deploy infrastructure
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+ 
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{  secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{  secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+      AWS_REGION: us-west-2
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup s3 buckets and upload layers
+        run:  |
+          sh upload-src.sh
+      - name: zip lambdas
+        run:  |
+          sh zip-lambdas.sh
+      - name: run terraform
+        run:  |
+          cd infrastructure
+          terraform init
+          terraform apply \
+          -var "MASTODON_ACCESS_TOKEN=${{ secrets.MASTODON_ACCESS_TOKEN }}" \
+          -var "STABILITY_HOST=${{ secrets.STABILITY_HOST }}" \
+          -var "STABILITY_KEY=${{ secrets.STABILITY_KEY }}" \
+          -auto-approve

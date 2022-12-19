@@ -14,13 +14,13 @@ s3 = boto3.client('s3')
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table(toots_table_name)
 bucket = 'ai-art-tooter-img'
-os.environ['STABILITY_HOST'] = os.getenv('STABILITY_HOST')
-os.environ['STABILITY_KEY'] = os.getenv('STABILITY_KEY')
+STABILITY_HOST = os.getenv('STABILITY_HOST')
+STABILITY_KEY = os.getenv('STABILITY_KEY')
 
 
 def generate_art(prompt_from_toot, file_name):
     stability_api = client.StabilityInference(
-        key = os.environ['STABILITY_KEY'],
+        key = STABILITY_KEY,
         verbose=True,
         engine="stable-diffusion-v1-5", # Set the engine to use for generation. 
         # Available engines: stable-diffusion-v1 stable-diffusion-v1-5 stable-diffusion-512-v2-0 stable-diffusion-768-v2-0 stable-inpainting-v1-0 stable-inpainting-512-v2-0

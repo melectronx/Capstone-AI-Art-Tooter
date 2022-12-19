@@ -12,6 +12,7 @@ resource "aws_lambda_function" "generate_art" {
   environment {
     variables = {
       TOOTS_TABLE_NAME = aws_dynamodb_table.toots.name
+      STABILITY_KEY = var.STABILITY_KEY
     }
   }
 }

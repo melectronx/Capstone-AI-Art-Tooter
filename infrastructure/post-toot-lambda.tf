@@ -11,6 +11,7 @@ resource "aws_lambda_function" "post_toot" {
   environment {
     variables = {
       TOOTS_TABLE_NAME = aws_dynamodb_table.toots.name
+      MASTODON_ACCESS_TOKEN = var.MASTODON_ACCESS_TOKEN
     }
   }
 }

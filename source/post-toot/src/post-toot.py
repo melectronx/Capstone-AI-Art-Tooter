@@ -15,12 +15,8 @@ def post_toot(record):
     s3_data = record["s3"]
     bucket_name = s3_data["bucket"]["name"]
     file_name = s3_data["object"]["key"]
-    id = int(file_name[0:-5])
-    response = table.get_item(
-    Key={
-        'id' : id 
-        }
-    )
+    id = int(file_name[0:-4])
+    response = table.get_item(Key={ 'id' : id })
     username = response['Item']['username']
     in_reply_to_id = response['Item']['id']
     status = username + " here is your AI-ART!"

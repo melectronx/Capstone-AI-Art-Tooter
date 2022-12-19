@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 mastodon = Mastodon(
-    access_token = os.environ.get('MASTODON_ACCESS_TOKEN'),
+    access_token = os.getenv('MASTODON_ACCESS_TOKEN'),
     api_base_url = 'https://techhub.social'
 )
 dynamodb = boto3.resource('dynamodb')

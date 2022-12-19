@@ -24,7 +24,7 @@ def save_toot(toot_data):
             "date": datetoot,
             "prompt": prompt,
             "username": toot_data["account"]["username"],
-            "filename": str(toot_data['id'])+'.jpeg'
+            "filename": str(toot_data['id'])+'.png'
             }    
     toots_table.put_item(Item = toot)
     

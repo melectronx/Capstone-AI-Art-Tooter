@@ -17,7 +17,7 @@ bucket = 'ai-art-tooter-img'
 
 def generate_art(prompt_from_toot, file_name):
     stability_api = client.StabilityInference(
-        key=os.environ['STABILITY_KEY'],
+        key=os.getenv('STABILITY_KEY'),
         verbose=True,
         engine="stable-diffusion-v1-5", # Set the engine to use for generation. 
         # Available engines: stable-diffusion-v1 stable-diffusion-v1-5 stable-diffusion-512-v2-0 stable-diffusion-768-v2-0 stable-inpainting-v1-0 stable-inpainting-512-v2-0

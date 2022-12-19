@@ -6,21 +6,21 @@ import warnings
 from PIL import Image
 from stability_sdk import client
 import stability_sdk.interfaces.gooseai.generation.generation_pb2 as generation
-from dotenv import load_dotenv
-load_dotenv()
+#from dotenv import load_dotenv
+#load_dotenv()
 
 toots_table_name = os.getenv('TOOTS_TABLE_NAME')
 s3 = boto3.client('s3')
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table(toots_table_name)
 bucket = 'ai-art-tooter-img'
-STABILITY_HOST = os.getenv('STABILITY_HOST')
-STABILITY_KEY = os.getenv('STABILITY_KEY')
+stability_host = os.getenv('STABILITY_HOST')
+stability_key = os.getenv('STABILITY_KEY')
 
 
 def generate_art(prompt_from_toot, file_name):
     stability_api = client.StabilityInference(
-        key = STABILITY_KEY,
+        key = stability_key,
         verbose=True,
         engine="stable-diffusion-v1-5", # Set the engine to use for generation. 
         # Available engines: stable-diffusion-v1 stable-diffusion-v1-5 stable-diffusion-512-v2-0 stable-diffusion-768-v2-0 stable-inpainting-v1-0 stable-inpainting-512-v2-0
@@ -75,5 +75,4 @@ def handle_record(record):
 def handler(event, context):
     for record in event["Records"]:
         handle_record(record)
-    print(event)
     

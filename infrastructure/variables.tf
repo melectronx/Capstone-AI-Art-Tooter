@@ -5,6 +5,12 @@ locals {
   ecr_image_tag       = "latest"
 }
 
+variable "aws_region" {
+    type = string
+    default = "us-west-2"
+}
+
+
 variable "MASTODON_ACCESS_TOKEN" {
   description = "Access Token for Mastodon"
   type        = string

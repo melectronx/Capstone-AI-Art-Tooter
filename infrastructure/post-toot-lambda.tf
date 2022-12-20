@@ -1,6 +1,6 @@
 resource "aws_lambda_function" "post_toot" {
   function_name = "post_toot"
-  filename       = "build/post-toot.zip"
+  filename      = "build/post-toot.zip"
   role          = local.iam_role
   handler       = "post-toot.handler"
   timeout       = 300

@@ -1,7 +1,7 @@
 resource "aws_lambda_function" "generate_art" {
   depends_on = [
-   null_resource.ecr_image
- ]
+    null_resource.ecr_image
+  ]
   function_name = "generate_art"
   image_uri     = "${aws_ecr_repository.repo.repository_url}@${data.aws_ecr_image.lambda_image.id}"
   role          = local.iam_role
@@ -36,7 +36,7 @@ resource "null_resource" "ecr_image" {
        EOF
  }
 }
-data aws_ecr_image lambda_image {
+data "aws_ecr_image" "lambda_image" {
  depends_on = [
    null_resource.ecr_image
  ]
@@ -44,9 +44,6 @@ data aws_ecr_image lambda_image {
  image_tag       = local.ecr_image_tag
 }
  
-
-
-
 resource "aws_lambda_event_source_mapping" "toots_table_update" {
   event_source_arn  = aws_dynamodb_table.toots.stream_arn
   function_name     = aws_lambda_function.generate_art.arn

@@ -22,7 +22,7 @@ def generate_art(prompt_from_toot, file_name):
     stability_api = client.StabilityInference(
         key = stability_key,
         verbose=True,
-        engine="stable-diffusion-v1-5", # Set the engine to use for generation. 
+        engine='stable-diffusion-v1-5', # Set the engine to use for generation. 
         # Available engines: stable-diffusion-v1 stable-diffusion-v1-5 stable-diffusion-512-v2-0 stable-diffusion-768-v2-0 stable-inpainting-v1-0 stable-inpainting-512-v2-0
     )
     # Set up our initial generation parameters.
@@ -42,11 +42,11 @@ def generate_art(prompt_from_toot, file_name):
         for artifact in resp.artifacts:
             if artifact.finish_reason == generation.FILTER:
                 warnings.warn(
-                    "Your request activated the API's safety filters and could not be processed."
-                    "Please modify the prompt and try again.")
+                    'Your request activated the APIs safety filters and could not be processed.'
+                    'Please modify the prompt and try again.')
             if artifact.type == generation.ARTIFACT_IMAGE:
                 img = Image.open(io.BytesIO(artifact.binary))
-                file_path = '/tmp/'+ str(artifact.seed)+ ".png"
+                file_path = '/tmp/'+ str(artifact.seed)+ '.png'
                 img.save(file_path)
                 s3_upload(file_path, file_name)
 
@@ -56,7 +56,7 @@ def s3_upload(file_path, file_name):
 
 
 def handle_new_image(newImage):
-    id = int(newImage["id"]["N"])
+    id = int(newImage['id']['N'])
     response = table.get_item(
     Key={
         'id' : id 
@@ -68,11 +68,11 @@ def handle_new_image(newImage):
 
 
 def handle_record(record):
-    if "INSERT" in record["eventName"]:
-        handle_new_image(record["dynamodb"]["Keys"])
+    if "INSERT" in record['eventName']:
+        handle_new_image(record['dynamodb']['Keys'])
 
         
 def handler(event, context):
-    for record in event["Records"]:
+    for record in event['Records']:
         handle_record(record)
     

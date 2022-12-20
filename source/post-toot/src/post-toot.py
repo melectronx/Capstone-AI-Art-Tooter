@@ -12,18 +12,14 @@ mastodon = Mastodon(
 )
 
 def post_toot(record):
-    s3_data = record["s3"]
-    bucket_name = s3_data["bucket"]["name"]
-    file_name = s3_data["object"]["key"]
+    s3_data = record['s3']
+    bucket_name = s3_data['bucket']['name']
+    file_name = s3_data['object']['key']
     id = int(file_name[0:-4])
-    response = table.get_item(
-    Key={
-        'id' : id 
-        }
-    )
+    response = table.get_item(Key={ 'id' : id })
     username = response['Item']['username']
     in_reply_to_id = response['Item']['id']
-    status = username + " here is your AI-ART!"
+    status = username + ' here is your AI-ART!'
     s3.meta.client.download_file(bucket_name , file_name, '/tmp/'+file_name)
     media_file = '/tmp/'+file_name
     
@@ -32,9 +28,9 @@ def post_toot(record):
 
 def handler(event, context):
     
-    for record in event["Records"]:
+    for record in event['Records']:
         post_toot(record)
     
 
-if __name__ == "__main__":      
+if __name__ == '__main__':      
     handler({},{})

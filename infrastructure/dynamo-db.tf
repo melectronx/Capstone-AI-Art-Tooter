@@ -7,4 +7,6 @@ resource "aws_dynamodb_table" "toots" {
     name = "id"
     type = "N"
   }
+  stream_enabled = true
+  stream_view_type = "NEW_IMAGE"
 }

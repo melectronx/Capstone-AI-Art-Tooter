@@ -2,10 +2,12 @@ from mastodon import Mastodon
 import boto3
 import os
 
+
 toots_table_name = os.getenv('TOOTS_TABLE_NAME')
-s3 = boto3.resource('s3')
-dynamodb = boto3.resource('dynamodb')
-table = dynamodb.Table(toots_table_name)
+s3               = boto3.resource('s3')
+dynamodb         = boto3.resource('dynamodb')
+table            = dynamodb.Table(toots_table_name)
+
 mastodon = Mastodon(
     access_token = os.getenv('MASTODON_ACCESS_TOKEN'),
     api_base_url = 'https://techhub.social'

@@ -1,16 +1,16 @@
 resource "aws_lambda_function" "post_toot" {
-  function_name = "post_toot"
-  filename      = "build/post-toot.zip"
-  role          = local.iam_role
-  handler       = "post-toot.handler"
-  timeout       = 300
-  runtime       = "python3.9"
-  layers        = [aws_lambda_layer_version.mastodon_layer.arn]
-  source_code_hash = filebase64sha256(data.archive_file.post_toot.output_path)  
+  function_name     = "post_toot"
+  filename          = "build/post-toot.zip"
+  role              = local.iam_role
+  handler           = "post-toot.handler"
+  timeout           = 300
+  runtime           = "python3.9"
+  layers            = [aws_lambda_layer_version.mastodon_layer.arn]
+  source_code_hash  = filebase64sha256(data.archive_file.post_toot.output_path)  
   
   environment {
     variables = {
-      TOOTS_TABLE_NAME = aws_dynamodb_table.toots.name
+      TOOTS_TABLE_NAME      = aws_dynamodb_table.toots.name
       MASTODON_ACCESS_TOKEN = var.MASTODON_ACCESS_TOKEN
     }
   }
@@ -18,7 +18,7 @@ resource "aws_lambda_function" "post_toot" {
 
 data "archive_file" "post_toot" {
   type        = "zip"
-  source_dir = "../${path.module}/source/post-toot/src/"
+  source_dir  = "../${path.module}/source/post-toot/src/"
   output_path = "${path.module}/build/post-toot.zip"
 }
 

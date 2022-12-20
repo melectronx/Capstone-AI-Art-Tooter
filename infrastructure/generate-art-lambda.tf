@@ -8,11 +8,10 @@ resource "aws_lambda_function" "generate_art" {
   timeout       = 600
   package_type  = "Image"
   
-
   environment {
     variables = {
-      TOOTS_TABLE_NAME = aws_dynamodb_table.toots.name
-      STABILITY_KEY = var.STABILITY_KEY
+      TOOTS_TABLE_NAME  = aws_dynamodb_table.toots.name
+      STABILITY_KEY     = var.STABILITY_KEY
     }
   }
 }
@@ -22,26 +21,27 @@ resource "aws_ecr_repository" "repo" {
 }
 
 resource "null_resource" "ecr_image" {
- triggers = {
-   python_file = md5(file("../${path.module}/source/generate-art/src/generate-art.py"))
-   docker_file = md5(file("../${path.module}/source/generate-art/src/Dockerfile"))
- }
+  triggers = {
+    python_file = md5(file("../${path.module}/source/generate-art/src/generate-art.py"))
+    docker_file = md5(file("../${path.module}/source/generate-art/src/Dockerfile"))
+  }
  
- provisioner "local-exec" {
+  provisioner "local-exec" {
    command = <<EOF
            aws ecr get-login-password --region ${var.aws_region} | docker login --username AWS --password-stdin ${local.account_id}.dkr.ecr.${var.aws_region}.amazonaws.com
            cd ../${path.module}/source/generate-art/src/
            docker build -t ${aws_ecr_repository.repo.repository_url}:${local.ecr_image_tag} .
            docker push ${aws_ecr_repository.repo.repository_url}:${local.ecr_image_tag}
        EOF
- }
+  }
 }
+
 data "aws_ecr_image" "lambda_image" {
- depends_on = [
-   null_resource.ecr_image
- ]
- repository_name = local.ecr_repository_name
- image_tag       = local.ecr_image_tag
+  depends_on = [
+    null_resource.ecr_image
+  ]
+  repository_name = local.ecr_repository_name
+  image_tag       = local.ecr_image_tag
 }
  
 resource "aws_lambda_event_source_mapping" "toots_table_update" {

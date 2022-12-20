@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - main
-      - generate-art-docker
+      - archive
   workflow_dispatch:
  
 jobs:
@@ -19,9 +19,6 @@ jobs:
       - name: Setup s3 buckets and upload layers
         run:  |
           sh upload-src.sh
-      - name: zip lambdas
-        run:  |
-          sh zip-lambdas.sh
       - name: run terraform
         run:  |
           cd infrastructure

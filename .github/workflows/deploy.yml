@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - main
-      - archive
   workflow_dispatch:
  
 jobs:

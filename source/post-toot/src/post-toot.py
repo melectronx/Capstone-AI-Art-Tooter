@@ -2,10 +2,12 @@ from mastodon import Mastodon
 import boto3
 import os
 
+
 toots_table_name = os.getenv('TOOTS_TABLE_NAME')
-s3 = boto3.resource('s3')
-dynamodb = boto3.resource('dynamodb')
-table = dynamodb.Table(toots_table_name)
+s3               = boto3.resource('s3')
+dynamodb         = boto3.resource('dynamodb')
+table            = dynamodb.Table(toots_table_name)
+
 mastodon = Mastodon(
     access_token = os.getenv('MASTODON_ACCESS_TOKEN'),
     api_base_url = 'https://techhub.social'
@@ -19,7 +21,7 @@ def post_toot(record):
     response = table.get_item(Key={ 'id' : id })
     username = response['Item']['username']
     in_reply_to_id = response['Item']['id']
-    status = username + ' here is your AI-ART!'
+    status = '@' + username + ' here is your AI-ART!'
     s3.meta.client.download_file(bucket_name , file_name, '/tmp/'+file_name)
     media_file = '/tmp/'+file_name
     

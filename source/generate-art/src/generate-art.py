@@ -6,16 +6,15 @@ import warnings
 from PIL import Image
 from stability_sdk import client
 import stability_sdk.interfaces.gooseai.generation.generation_pb2 as generation
-#from dotenv import load_dotenv
-#load_dotenv()
+
 
 toots_table_name = os.getenv('TOOTS_TABLE_NAME')
-s3 = boto3.client('s3')
-dynamodb = boto3.resource('dynamodb')
-table = dynamodb.Table(toots_table_name)
-bucket = 'ai-art-tooter-img'
-stability_host = os.getenv('STABILITY_HOST')
-stability_key = os.getenv('STABILITY_KEY')
+s3               = boto3.client('s3')
+dynamodb         = boto3.resource('dynamodb')
+table            = dynamodb.Table(toots_table_name)
+bucket           = 'ai-art-tooter-img'
+stability_host   = os.getenv('STABILITY_HOST')
+stability_key    = os.getenv('STABILITY_KEY')
 
 
 def generate_art(prompt_from_toot, file_name):

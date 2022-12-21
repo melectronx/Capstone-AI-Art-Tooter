@@ -6,7 +6,7 @@ resource "aws_lambda_function" "get_toot" {
   timeout       = 600
   runtime       = "python3.9"
   layers        = [aws_lambda_layer_version.mastodon_layer.arn]
-  source_code_hash = filebase64sha256("build/get-toot.zip")
+  source_code_hash = filebase64sha256(data.archive_file.get_toot.output_path)
 
   environment {
     variables = {

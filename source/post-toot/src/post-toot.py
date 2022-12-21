@@ -21,7 +21,7 @@ def post_toot(record):
     response = table.get_item(Key={ 'id' : id })
     username = response['Item']['username']
     in_reply_to_id = response['Item']['id']
-    status = username + ' here is your AI-ART!'
+    status = '@' + username + ' here is your AI-ART!'
     s3.meta.client.download_file(bucket_name , file_name, '/tmp/'+file_name)
     media_file = '/tmp/'+file_name
     
